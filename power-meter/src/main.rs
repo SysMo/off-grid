@@ -4,13 +4,13 @@ use tokio::{
     process, time
 };
 
-
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     modbus().await
     // low_level().await
 }
 
+// adajsdasdjla
 pub async fn modbus() -> Result<(), Box<dyn std::error::Error>> {
     use tokio_serial::SerialStream;
 

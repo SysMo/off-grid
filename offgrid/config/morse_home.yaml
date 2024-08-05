@@ -1,0 +1,37 @@
+tick_interval: 2s
+queue_size: 1000
+inputs:
+  - name: power_meter
+    reader:      
+      type: ModbusReader
+      transport:
+        type: TCP
+        host: 127.0.0.1
+        port: 9872
+      tick_interval: 1s
+      register_map: csv::config/power_meter_registers.csv
+
+  - name: power_meter_RTU
+    reader:
+      type: ModbusReader
+      transport:
+        type: RTU
+        tty_path: "/dev/ttyUSB0"
+        slave: Slave(0x0)
+        data_bits: Eight
+        stop_bits: One
+        parity: Even
+      tick_interval: 1s
+      register_map: csv::config/power_meter_registers.csv
+
+
+outputs:
+  - name: console
+    batch_size: 1
+    flush_interval: 4s
+    writer_timeout: 0.5m
+    writer:
+      type: ConsoleWriter
+      timestamp: true
+      fields: [v1, v2, v3]
+

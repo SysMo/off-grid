@@ -1,0 +1,2 @@
+id,description,group,type,start,length,block
+electricity,Voltage Current Power,voltages,ElectricityMeasurement,0,3,BL1

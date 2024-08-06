@@ -1,0 +1,21 @@
+---
+# tasks file for morse-edge
+
+- name: Update repository index
+  apt:
+    update_cache: yes
+    cache_valid_time: 100000
+    # upgrade: dist
+  become: true
+
+- name: Create user 'morse' with a specific uid
+  ansible.builtin.user:
+    name: morse
+    comment: morse daemon user
+    uid: 1040
+    create_home: yes
+  become: true
+
+- name: Deploy Morse edge
+  include_tasks: deploy_morse.yaml
+  when: role_action == "deploy"

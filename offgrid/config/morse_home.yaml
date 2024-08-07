@@ -1,15 +1,18 @@
 tick_interval: 2s
 queue_size: 1000
 inputs:
-  - name: power_meter
-    reader:      
-      type: ModbusReader
-      transport:
-        type: TCP
-        host: 127.0.0.1
-        port: 9872
-      tick_interval: 1s
-      register_map: csv::config/power_meter_registers.csv
+  # - name: power_meter
+  #   reader:      
+  #     type: ModbusReader
+  #     transport:
+  #       type: TCP
+  #       host: 127.0.0.1
+  #       port: 9872
+  #     tick_interval: 1s
+  #     register_map: csv::config/power_meter_registers.csv
+  #   transformer:
+  #     type: OffGridTransformer
+
 
   - name: power_meter_RTU
     reader:
@@ -17,7 +20,7 @@ inputs:
       transport:
         type: RTU
         tty_path: "/dev/ttyUSB0"
-        slave: Slave(0x0)
+        slave_id: 0x0
         data_bits: Eight
         stop_bits: One
         parity: Even

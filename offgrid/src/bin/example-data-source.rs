@@ -1,9 +1,4 @@
-use morse::protocols::modbus::{register_types::{MbInt16}, ModbusDataClient};
-use tokio_serial::{SerialPortBuilderExt, DataBits, StopBits, Parity};
-use tokio::{
-    io::{AsyncReadExt, AsyncWriteExt},
-    process, time
-};
+use morse::protocols::modbus::{register_types::MbInt16, ModbusDataClient};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -16,32 +11,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   set_registers(&mut client).await?;
   log::info!("Wrote data");
   client.disconnect().await?;
-  //
-
-  // test_simple_registers(&mut client).await?;
-  set_registers(&mut client).await?;
-  log::info!("Wrote data");
-  client.disconnect().await?;
-
+  
   // tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
   Ok(())
-}
-
-pub async fn modbus_rtu() -> Result<(), Box<dyn std::error::Error>> {
-  use tokio_serial::SerialStream;
-
-  use tokio_modbus::prelude::*;
-
-  let tty_path = "/dev/ttyUSB0";
-  let slave = Slave(0x0);
-
-  let builder = tokio_serial::new(tty_path, 9600)
-      .data_bits(DataBits::Eight)
-      .stop_bits(StopBits::One)
-      .parity(Parity::Even);
-  let port = SerialStream::open(&builder).unwrap();
-
-  let mut ctx = ModbusDataClient::connect_rtu(port, slave);
 }
 
 async fn set_registers(client: &mut ModbusDataClient) -> anyhow::Result<()> {

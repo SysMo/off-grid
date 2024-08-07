@@ -1,2 +1,4 @@
-id,description,group,type,start,length,block
-electricity,Voltage Current Power,voltages,ElectricityMeasurement,0,3,BL1
+id          ,description           ,group    ,type                   ,start ,length ,block
+electricity ,Voltage Current Power ,voltages ,ElectricityMeasurement ,    0 ,    27 ,BL1
+energy      ,Energy                ,energies ,EnergyMeasurement      ,   29 ,    52 ,BL2
+

@@ -1,0 +1,110 @@
+- name: prepare deploy
+  become: true
+  become_user: morse
+  block:
+    - name: Create service folder
+      ansible.builtin.file:
+        path: "/home/morse/{{ deployment.folder }}"
+        state: directory
+        mode: '0755'
+        owner: morse
+        group: morse
+
+    - name: Create config folder
+      ansible.builtin.file:
+        path: "/home/morse/{{ deployment.folder }}/config"
+        state: directory
+        mode: '0755'
+        owner: morse
+        group: morse
+
+    - name: Create log folder
+      ansible.builtin.file:
+        path: "/home/morse/{{ deployment.folder }}/log"
+        state: directory
+        mode: '0755'
+        owner: morse
+        group: morse
+
+- name: deploy modbus test server
+  become: true
+  become_user: morse
+  block:
+    - name: Copy modbus test server executable
+      ansible.builtin.copy:
+        src: "{{ proj_dir }}/morse/target/{{ deployment.arch }}/release/modbus_server"
+        dest: /home/morse/{{ deployment.folder }}
+        mode: '0755'
+        owner: morse
+        group: morse
+
+    - name: Copy log config
+      ansible.builtin.copy:
+        src: "{{ proj_dir }}/{{ router.local_folder }}/config/log4rs.yaml"
+        dest: /home/morse/{{ deployment.folder }}/config/log4rs.yaml
+        mode: '0755'
+        owner: morse
+        group: morse
+
+- name: modbus test server service
+  become: true
+  block:
+    - name: Create modbus server system service
+      ansible.builtin.copy:
+        src: modbus-test-server.service
+        dest: /etc/systemd/system
+        mode: '0755'
+        owner: root
+        group: root
+      
+    - name: Start modbus server system service
+      ansible.builtin.systemd_service:
+        enabled: true
+        state: started
+        name: modbus-test-server
+
+- name: deploy data agent
+  become: true
+  become_user: morse
+  block:
+    - name: Copy agent executable
+      ansible.builtin.copy:
+        src: "{{ proj_dir }}/{{ router.local_folder }}/target/{{ deployment.arch }}/release/{{ router.name }}"
+        dest: /home/morse/{{ deployment.folder }}
+        mode: '0755'
+        owner: morse
+        group: morse
+
+    - name: Copy log config
+      ansible.builtin.copy:
+        src: "{{ proj_dir }}/{{ router.local_folder }}/config/log4rs.yaml"
+        dest: /home/morse/{{ deployment.folder }}/config/log4rs.yaml
+        mode: '0755'
+        owner: morse
+        group: morse
+
+    - name: Copy config files
+      ansible.builtin.copy:
+        src: "{{ proj_dir }}/{{ router.local_folder }}/config/{{ item }}"
+        dest: /home/morse/{{ deployment.folder }}/config
+        mode: '0755'
+        owner: morse
+        group: morse
+      loop: "{{ router.config_files }}"
+
+- name: morse home service
+  become: true
+  block:
+    - name: Create  morse-home system service
+      ansible.builtin.copy:
+        src: morse-home-agent.service
+        dest: /etc/systemd/system
+        mode: '0755'
+        owner: root
+        group: root
+      
+    - name: Start morse home service
+      ansible.builtin.systemd_service:
+        enabled: true
+        state: started
+        name: morse-home-agent

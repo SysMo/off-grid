@@ -38,3 +38,16 @@ outputs:
       timestamp: true
       fields: [v1, v2, v3]
 
+  - name: mqtt-writer
+    batch_size: 10
+    flush_interval: 4s
+    writer_timeout: 0.5m
+    writer:
+      type: MqttWriter
+      host: mqtt.hy2b.sysmoltd.com
+      port: 31893
+      client_id: morse-home-1
+      topic: morse-home
+      tls_ca: cert/out/ca/ca-sysmo.crt
+      tls_crt: cert/out/client/sysmo.crt
+      tls_key: cert/out/client/sysmo.key

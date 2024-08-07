@@ -20,7 +20,7 @@ deploy/rpi:
 	ssh ${DEST_HOST} mkdir -p ${DEST_PATH}
 	ssh ${DEST_HOST} mkdir -p ${DEST_PATH}/config
 	scp target/${ARCH}/release/morse-home ${DEST_HOST}:${DEST_PATH}
-	scp target/${ARCH}/release/data-source ${DEST_HOST}:${DEST_PATH}
+	# scp target/${ARCH}/release/data-source ${DEST_HOST}:${DEST_PATH}
 	scp -r config/* ${DEST_HOST}:${DEST_PATH}/config
 
 LOCAL_CERT_PATH:=/data/NextCloud/10_Management/10_Administration/92_Authentication/out
@@ -32,3 +32,7 @@ certificates/install:
 	scp  ${LOCAL_CERT_PATH}/client/morse-home.crt ${DEST_HOST}:${DEST_PATH}/cert
 	scp  ${LOCAL_CERT_PATH}/client/morse-home.key ${DEST_HOST}:${DEST_PATH}/cert
 	
+certificates/get:
+	scp  ${DEST_HOST}:${DEST_PATH}/cert/ca-sysmo.crt ../cert
+	scp  ${DEST_HOST}:${DEST_PATH}/cert/morse-home.crt ../cert
+	scp  ${DEST_HOST}:${DEST_PATH}/cert/morse-home.key ../cert

@@ -48,6 +48,6 @@ outputs:
       port: 31893
       client_id: morse-home-1
       topic: morse-home
-      tls_ca: cert/out/ca/ca-sysmo.crt
-      tls_crt: cert/out/client/sysmo.crt
-      tls_key: cert/out/client/sysmo.key
+      tls_ca: cert/ca-sysmo.crt
+      tls_crt: cert/morse-home.crt
+      tls_key: cert/morse-home.key

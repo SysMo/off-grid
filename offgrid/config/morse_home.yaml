@@ -24,8 +24,9 @@ inputs:
         data_bits: Eight
         stop_bits: One
         parity: Even
-      tick_interval: 1s
       register_map: csv::config/power_meter_registers.csv
+      read_interval: 5s
+      timeout: 1s
 
 
 outputs:
@@ -51,3 +52,14 @@ outputs:
       tls_ca: cert/ca-sysmo.crt
       tls_crt: cert/morse-home.crt
       tls_key: cert/morse-home.key
+
+  - name: influxdb-writer
+    batch_size: 10
+    flush_interval: 5s
+    writer_timeout: 0.5m
+    writer:
+      type: InfluxDbWriter
+      url: https://eu-central-1-1.aws.cloud2.influxdata.com
+      org: sysmo
+      bucket: morse-home-bucket
+      token: "V51MEOS_QEms194cMZ6HbgVKcu_1Kw_Hy3J8R8aMtvjBLGjlxqFpwNkKQSLHyrdl-uyt7gisaJy8SXcDZTsdqg=="

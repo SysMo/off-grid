@@ -1,0 +1,58 @@
+adminUser: serveradmin
+adminPassword: z6@X@VBJH4u5WcHe
+persistence:
+  enabled: true
+extraSecretMounts: []
+grafana.ini:
+  server:
+    domain: offgrid.sg.sysmoltd.com
+    root_url: https://%(domain)s
+  auth.generic_oauth:
+    enabled: true
+    name: Keycloak-OAuth
+    allow_sign_up: true
+    client_id: grafana
+    client_secret: nbyBI88RpIn9R97JE2jx5OgcLSVTak2P
+    scopes: openid email profile offline_access roles
+    auth_url: https://keycloak.hy2b.sysmoltd.com/realms/offgrid/protocol/openid-connect/auth
+    token_url: https://keycloak.hy2b.sysmoltd.com/realms/offgrid/protocol/openid-connect/token
+    api_url: https://keycloak.hy2b.sysmoltd.com/realms/offgrid/protocol/openid-connect/userinfo
+    signout_redirect_url: https://keycloak.hy2b.sysmoltd.com/realms/offgrid/protocol/openid-connect/logout?post_logout_redirect_uri=https%3A%2F%2Foffgrid.sg.sysmoltd.com
+    email_attribute_path: email
+    login_attribute_path: preferred_username
+    name_attribute_path: name
+    role_attribute_path: contains(resource_access.grafana.roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(resource_access.grafana.roles[*], 'admin') && 'Admin' || contains(resource_access.grafana.roles[*], 'editor') && 'Editor' || 'Viewer'
+    allow_assign_grafana_admin: true
+    disable_login_form: true
+    tls_skip_verify_insecure: false
+  feature_toggles:
+    enable: canvasPanelPanZoom
+plugins:
+- influxdata-flightsql-datasource
+- volkovlabs-variable-panel
+- yesoreyeram-infinity-datasource
+assertNoLeakedSecrets: false
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+  hosts:
+  - offgrid.sg.sysmoltd.com
+  tls:
+  - hosts:
+    - offgrid.sg.sysmoltd.com
+    secretName: grafana-ingress-tls
+rbac:
+  create: false
+image:
+  registry: docker.io
+  repository: grafana/grafana
+  tag: '11.3.0'
+  pullSecrets: []
+  pullPolicy: Always
+nodeSelector:
+  kubernetes.io/hostname: hy2b

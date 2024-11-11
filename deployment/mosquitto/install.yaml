@@ -1,0 +1,9 @@
+namespace: offgrid
+name: mosquitto
+image:
+  repository: t3n/mosquitto
+  tag: 2.4.1
+
+cert_secret_name: cert-secret
+
+service_port: 31883

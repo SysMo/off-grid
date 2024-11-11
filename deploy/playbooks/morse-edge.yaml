@@ -1,6 +1,0 @@
----
-
-- hosts: all
-  remote_user: sysmo
-  roles:
-    - role: '../roles/morse-edge'

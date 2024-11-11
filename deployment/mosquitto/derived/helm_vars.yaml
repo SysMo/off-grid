@@ -1,0 +1,14 @@
+extraVolumes:
+- name: tls
+  secret:
+    secretName: cert-secret
+extraVolumeMounts:
+- name: tls
+  mountPath: /mosquitto/certs/ca.crt
+  subPath: ca.crt
+- name: tls
+  mountPath: /mosquitto/certs/server.crt
+  subPath: server.crt
+- name: tls
+  mountPath: /mosquitto/certs/server.key
+  subPath: server.key

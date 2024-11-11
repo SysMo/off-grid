@@ -1,0 +1,29 @@
+{
+  "networks": {
+    "SysMo-2.4":  "rokobaroko",
+    "nasko-deco": "rokobaroko",
+    "STSEL_AP22": "inductivesensor"
+  },
+  "tick_interval": 2000,
+  "led_indicator_pin": 8,
+  "mqtt":  {
+    "client_id": "solar-home-1",
+    "server": "mqtt.hy2b.sysmoltd.com",
+    "port": 31883,
+    "prefix":  "offgrid/in"
+  },
+  "modbus": {
+    "rx": 0,
+    "tx": 1,
+    "baudrate": 9600,
+    "slave_id": 2
+  },
+  "sensors": {
+    "temperature": {
+      "OneWire": {
+        "type": "ds18b20",
+        "pin": 3
+      }
+    }
+  }
+}

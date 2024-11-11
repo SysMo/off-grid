@@ -1,0 +1,3 @@
+id,description,group,type,start,length,block
+electrical_state,"Current values of voltages, currents, powers",,ElectricalState,32768,54,
+energy_meter,Energy measurements,,EnergyMeter,33024,24,

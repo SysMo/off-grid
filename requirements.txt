@@ -1,1 +1,3 @@
 ansible
+esptool
+mpremote

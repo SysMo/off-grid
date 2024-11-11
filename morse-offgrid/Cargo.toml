@@ -1,0 +1,25 @@
+[package]
+name = "morse-offgrid"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0.86", features = ["backtrace"] }
+bincode = {version = "2.0.0-rc.3", features = ["serde"]}
+byteorder = "1.5.0"
+chrono = { version = "0.4.38", features = ["serde"] }
+diesel = { version = "2.2.2", features = ["postgres", "postgres_backend", "chrono"] }
+futures = "0.3.30"
+hex = "0.4.3"
+itertools = "0.13.0"
+linkme = "0.3.27"
+log4rs = "1.3.0"
+log = "*"
+morse = {path = "/data/Workspace/Hynergy/hyboard/morse", version = "*"}
+serde = {version = "1.0.203", features = ["derive"]}
+# serde_json = "1.0.128"
+tokio = {version = "1.38.0", features = ["full"]}
+typetag = "0.2.16"
+tokio-modbus = {version = "0.13.0", default-features = false, features = ["tcp", "tcp-server", "rtu"]}
+tokio-util = "0.7.12"
+# console-subscriber = "0.4.0"

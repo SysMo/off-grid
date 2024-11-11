@@ -1,0 +1,25 @@
+namespace: offgrid
+name: grafana
+image:
+  repository: grafana/grafana
+  tag: 11.3.0
+service_port: 3000
+domain: offgrid.sg.sysmoltd.com
+admin:
+  username: serveradmin
+  password: z6@X@VBJH4u5WcHe
+oauth:
+  keycloak_url: keycloak.hy2b.sysmoltd.com
+  realm: offgrid
+  client_id: grafana
+  client_secret: nbyBI88RpIn9R97JE2jx5OgcLSVTak2P
+
+plugins: 
+  - influxdata-flightsql-datasource
+  - volkovlabs-variable-panel
+  - yesoreyeram-infinity-datasource
+enable_features:
+  - "canvasPanelPanZoom"
+
+node_selector:
+  kubernetes.io/hostname: hy2b

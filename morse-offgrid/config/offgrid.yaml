@@ -1,0 +1,97 @@
+tick_interval: 5s
+default_channel_capacity: 100
+components:
+  mqtt:
+    name: mqtt-reader
+    reader:
+      client:
+        host: mqtt.hy2b.sysmoltd.com
+        port: 31883
+        client_id: offgrid-sysmo-cloud
+        tls:
+          ca: /data/Workspace/Hynergy/hyboard/cert/out/ca/ca-sysmo.crt
+          crt: /data/Workspace/Hynergy/hyboard/cert/out/client/sysmo.crt
+          key: /data/Workspace/Hynergy/hyboard/cert/out/client/sysmo.key
+      topic: offgrid/in/data
+
+  # splitter:
+  #   name: splitter
+
+  # state_processor:
+  #   name: state processor
+  #   processor:
+  #     state_maps:
+  #       - loader: csv
+  #         path: config/kam_signal_list_v6.csv
+  #       - loader: csv
+  #         path: config/gammel_signal_list.csv
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_grid
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_electrolyzer
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_solar
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_1
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_2
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_3
+
+  # db_current_state:
+  #   name: current_state_writer
+  #   writer:
+  #     client:
+  #       host: postgres.hy2b.sysmoltd.com
+  #       port: 32432
+  #       user: sysmo
+  #       database: hy2b_current
+  #       tls:
+  #         ca: ../cert/out/ca/ca-sysmo.crt
+  #         crt: ../cert/out/client/sysmo.crt
+  #         key: ../cert/out/client/sysmo.key
+
+  historical_processor:
+    name: historical_processor
+
+  # event_processor:
+  #   name: event_processor
+  #   transformer:
+  #     state_maps:
+  #       - loader: csv
+  #         path: config/kam_signal_list_v6.csv
+  #       - loader: csv
+  #         path: config/gammel_signal_list.csv
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_grid
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_electrolyzer
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_solar
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_1
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_2
+  #       - loader: csv
+  #         path: config/ecker_signal_list.csv
+  #         prefix: power_trafo_3
+  #     measurement: events2
+
+  db_historical:
+    name: historical_data_writer
+    writer:
+      url: https://eu-central-1-1.aws.cloud2.influxdata.com
+      org: sysmo
+      bucket: offgrid
+      token: "MEredzzxZGDBQ5jfJJFS6p3L3RYv76-VsYBLtuvI5jatfRBivvZlIGQcO6JIwd6R4_fhHrVrctl0UYhUrGdPNA=="     

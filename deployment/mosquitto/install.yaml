@@ -1,9 +1,49 @@
-namespace: offgrid
-name: mosquitto
-image:
-  repository: t3n/mosquitto
-  tag: 2.4.1
 
-cert_secret_name: cert-secret
+deployment:
+  name: mosquitto
+  namespace: offgrid
+  image:
+    repository: eclipse-mosquitto
+    tag: 2
 
-service_port: 31883
+  mounts:
+    - name: config
+      source:
+        type: ConfigMap
+        name: mosquitto-config
+      paths:
+        /mosquitto/config/mosquitto.conf: mosquitto.conf
+    - name: tls
+      source:
+        type: Secret
+        name: mosquitto-server-cert
+      paths:
+        /mosquitto/certs/ca.crt: ca.crt
+        /mosquitto/certs/server.crt: tls.crt
+        /mosquitto/certs/server.key: tls.key
+    - name: data
+      source:
+        type: PersistentVolume
+        name: mosquitto-data
+      paths:
+        /mosquitto/data: null
+
+  ports:
+    - name: mqtt
+      containerPort: 8883
+      protocol: TCP
+    - name: websocket
+      containerPort: 9090
+      protocol: TCP
+
+service:
+  name: mosquitto
+  namespace: offgrid
+  visibility:
+    type: NodePort
+    name: mqtt
+    container_port: mqtt
+    external_port: 31883
+    internal_port: 8883
+
+# ext_port: 31883

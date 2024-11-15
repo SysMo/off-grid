@@ -1,0 +1,17 @@
+namespace: offgrid
+objects:
+  - type: TlsCertificate
+    name: mosquitto-server-cert
+    ca: ../../../SysMo/sysmo-cloud/cert/out/ca/ca-sysmo.crt
+    cert: ../../../SysMo/sysmo-cloud/cert/out/server/star.sg.sysmoltd.com.crt
+    key: ../../../SysMo/sysmo-cloud/cert/out/server/star.sg.sysmoltd.com.key
+  - type: ConfigMap
+    name: mosquitto-config
+    entries:
+      mosquitto.conf:
+        type: File
+        path: mosquitto/mosquitto.conf
+  - type: VolumeClaim
+    name: mosquitto-data
+    size: 1Gi
+    storage_class: ceph-rbd

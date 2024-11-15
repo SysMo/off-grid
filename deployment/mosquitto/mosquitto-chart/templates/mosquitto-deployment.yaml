@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: mosquitto
+    app.kubernetes.io/name: mosquitto
+  name: mosquitto
+  namespace: offgrid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: mosquitto
+      app.kubernetes.io/name: mosquitto
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: mosquitto
+        app.kubernetes.io/name: mosquitto
+    spec:
+      containers:
+      - image: eclipse-mosquitto:2
+        name: mosquitto
+        ports:
+        - containerPort: 8883
+          name: mqtt
+          protocol: TCP
+        - containerPort: 9090
+          name: websocket
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /mosquitto/config/mosquitto.conf
+          name: config
+          subPath: mosquitto.conf
+        - mountPath: /mosquitto/certs/ca.crt
+          name: tls
+          subPath: ca.crt
+        - mountPath: /mosquitto/certs/server.crt
+          name: tls
+          subPath: tls.crt
+        - mountPath: /mosquitto/certs/server.key
+          name: tls
+          subPath: tls.key
+        - mountPath: /mosquitto/data
+          name: data
+      volumes:
+      - configMap:
+          name: mosquitto-config
+        name: config
+      - name: tls
+        secret:
+          secretName: mosquitto-server-cert
+      - name: data
+        persistentVolumeClaim:
+          claimName: mosquitto-data

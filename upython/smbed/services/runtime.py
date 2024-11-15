@@ -12,7 +12,7 @@ from .dispatcher import Dispatcher
 from ..hardware import LedIndicator
 from .modbus import ModbusClientService
 from ..data.register_maps.dts777 import DTS777
-# from ..sensors import SensorManager
+from ..sensors import SensorManager
 from ..util import CatchErrors, WithLogger, MqttLoggingHandler
 
 # class RuntimeState:
@@ -75,8 +75,8 @@ class Runtime(WithLogger):
         #     sys.print_exception(e, sb)
         #     self.logger.error(sb.getvalue())
 
-    #     await self.sensor_manager.acquire_data()
-    #     await self.dispatcher.process_queue()
+        await self.sensor_manager.acquire_data()
+        await self.dispatcher.process_queue()
 
     async def main(self):
         await self.on_start()

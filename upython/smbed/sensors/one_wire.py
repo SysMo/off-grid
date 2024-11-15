@@ -25,10 +25,10 @@ class OneWireCommunicator(SensorCommunicator):
     else:
       raise ValueError(f"Unknown sensor type {sensor_type}")
   
-  def encode_sensor_id(self, b) -> str:
-    return binascii.hexlify(
-      hashlib.sha1(b).digest()
-    )[:4].decode('utf-8')
+  # def encode_sensor_id(self, b) -> str:
+  #   return binascii.hexlify(
+  #     hashlib.sha1(b).digest()
+  #   )[:4].decode('utf-8')
 
   # def read(self):
   #   try:
@@ -52,8 +52,12 @@ class OneWireCommunicator(SensorCommunicator):
   async def read_values(self, sensor_raw_ids: list[bytes]):
     asyncio.sleep_ms(750)
     for raw_id in sensor_raw_ids:
+      id =  '-'.join(
+        ''.join(f'{x:02x}' for x in raw_id[(2 * seg):(2 * seg + 2)])
+        for seg in range(4)
+      )
+      # id = f"{raw_id:x}"
       try:
-        id = self.encode_sensor_id(raw_id)
         value = self.sensor_array.read_temp(raw_id)
         self.dispatcher.dispatch(SensorReadingFloat(id, value))
       except Exception as e:
